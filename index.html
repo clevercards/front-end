@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clever Cards</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="data-types.js"></script>
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+          <h1>Math and Science Clever-Cards</h1>
+          <!-- Introductory form -->
+          <form action="" id="introduction">
+            <p>
+                Create sample questions and test your ability in the fields of
+                Physics, Biology, Chemistry and Mathematics.
+            </p>
+            <fieldset>
+              <legend>Create Sample Test</legend>
+              <div class="choices">
+                <div class="sample-number">
+                  <h3>Number of choices</h3>
+                  <input type="radio" id="sample-number-1" name="sample-num" value="3">
+                  <label for="sample-number-1">3</label><br>
+                  <input type="radio" id="sample-number-2" name="sample-num" value="5">
+                  <label for="sample-number-2">5</label><br>
+                  <input type="radio" id="sample-number-3" name="sample-num" value="10">
+                  <label for="sample-number-3">10</label>
+                </div>
+                <div class="sample-subject">
+                  <h3>Choose a Subject</h3>
+                  <input type="radio" id="mathematics" name="sample-post" value="Mathematics">
+                  <label for="mathematics">Mathematics</label><br>
+                  <input type="radio" id="biology" name="sample-post" value="Biology">
+                  <label for="biology">Biology</label><br>
+                  <input type="radio" id="chemistry" name="sample-post" value="Chemistry">
+                  <label for="chemistry">Chemistry</label><br>
+                  <input type="radio" id="physics" name="sample-post" value="Physics">
+                  <label for="physics">Physics</label>
+                </div>
+              </div>
+            </fieldset>
+            <input type="submit" value="Create Sample Test">
+          </form>
+        </header>
+
+        <!-- Multiple Choice Questions form -->
+        <form action="" id="mcqs">
+          <div id="evaluation"></div>
+          <input type="submit">
+        </form>
+
+        <!-- Make your questions form -->
+        <form action="" id="mcq_input">
+          <p>Make your own Multiple Choice Question</p>
+          <label for="question">Question</label>
+          <input id="question" type="text" name="question">
+          <label for="#options">No. of options</label>
+          <input id="#options" type="number" min="2" max="10" name="#options" value="2">
+          <div id="options">
+            <input class="option" type="text" id="right_answer" placeholder="Right Answer">
+            <input class="option" type="text" placeholder="Other Option">
+          </div>
+          <label for="subject">Subject</label>
+          <input id="subject" type="text" name="subject">
+          <label for="tag-list">No. of tags</label>
+          <input id="#tag-list" type="number" min="0" max="5" name="#tag-list" value="2">
+          <div id="tag-list">
+            <input class="tag-item" type="text">
+            <input class="tag-item" type="text">
+          </div>
+          <input type="submit" id="post_submit">
+        </form>
+    </main>
+</body>
+
+</html>
