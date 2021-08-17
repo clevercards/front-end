@@ -4,17 +4,15 @@ function addMcq(mcq) {
   // prepending will allow for submit button to stay at the bottom
   mcqsDisplay.prepend(giveMcqElement(mcq))
 }
-// show all current posts
-function displayCurrentMcqs() {
+// show specified mcqs
+function displayCurrentMcqs(mcqs) {
   // add every post to display
   const mcqsDisplay = document.querySelector('#mcqs');
   const toBeRemoved = document.getElementsByClassName('mcq');
-
-  if (mcqsDisplay.childNodes[0].className === 'mcq') {
-    // When rendering, avoid adding the same questions again
-    while (toBeRemoved[0]) {
-      toBeRemoved[0].parentNode.removeChild(toBeRemoved[0])
-    }
+  // remove all mcqs already displayed
+  for (let i = 0, n = toBeRemoved.length; i < n; i++) {
+    toBeRemoved[0].remove();
+    console.log('remove');
   }
   // Filter the list according to the number of questions and chosen subject
   // First get the number of questions and the subject
@@ -22,66 +20,42 @@ function displayCurrentMcqs() {
   let chosenSubject = document.querySelector('input[name="sample-post"]:checked').value;
   chosenSubject = chosenSubject.toLowerCase();
   // Filter the mcq's according to subject
-  let filteredArray = mcqs.filter(post => {
-    return post.subjectId === getSubjectId(chosenSubject);
+  let filteredArray = filterMcqsBySubject(chosenSubject, numQuestions);
+  filteredArray.forEach(mcq => {
+    addMcq(mcq)
+    console.log('added')
   });
-
-  // If there are less questions available than requested, show all of them.
-  if (numQuestions >= filteredArray.length) {
-    filteredArray.forEach(mcq => {
-      addMcq(mcq)
-    });
-  // Otherwise there are more questions available than requested
-  } else {
-    let newFilteredArray = [];
-    for (let i = 0; i < numQuestions; i++) {
-      // Create an index to choose a random number
-      let randomIndex = Math.floor(Math.random() * filteredArray.length);
-
-      // Remove choice from choice array, choice will be an array (so use choice[0])
-      let choice = filteredArray.splice(randomIndex, 1);
-      newFilteredArray.push(choice[0]);
-    }
-    newFilteredArray.forEach(mcq => {
-      addMcq(mcq)
-    });
-  }
 }
 
+// return all or limited number of random mcqs that are on the specified subject, the 'limit' parameter is optional
+function filterMcqsBySubject(subject, limit) {
+  let filteredArray = mcqs.filter(post => post.subjectId === getSubjectId(subject));
+  shuffle(filteredArray);
+
+  // If there are less questions available than requested, show all of them.
+  if (limit === undefined || limit >= filteredArray.length) {
+    return filteredArray;
+    // Otherwise there are more questions available than requested
+  } else {
+    return filteredArray.slice(0, limit);
+  }
+}
 // when page loads
 document.addEventListener("DOMContentLoaded", () => {
   // displayCurrentMcqs(); We can display questions after user designs sample questions
+
   // input for no. of options
   const optionsCountInput = document.getElementById('#options');
   // the div of option input fields
   const options = document.getElementById('options');
-  // record of how many options are being shown
-  let optionsCount = 2
-  // allow the user to control the no of options
-  optionsCountInput.addEventListener('change', () => {
-    // don't do anything if an integer is not given or input is out of range
-    if (optionsCountInput.value % 1 !== 0 || 2 > optionsCountInput.value || 10 < optionsCountInput.value) {
-      return
-    }
-    // add option inputs if option count input is more than options count now
-    if (optionsCountInput.value > optionsCount) {
-      for (let i = optionsCount; i < optionsCountInput.value; i++) {
-        const newOption = document.createElement('input')
-        newOption.classList.add('option')
-        newOption.setAttribute('type', 'text')
-        newOption.setAttribute('placeholder', 'Other Option')
-        options.appendChild(newOption)
-        optionsCount++
-      }
-      // and remove option inputs if option count input is less than options count now
-    } else if (optionsCountInput.value < optionsCount) {
-      const optionInputs = document.querySelectorAll('#options .option')
-      for (let i = optionInputs.length - 1; i >= optionsCountInput.value; i--) {
-        optionInputs[i].remove()
-        optionsCount--;
-      }
-    }
-  });
+  // new option template
+  const newOption = document.createElement('input')
+  newOption.classList.add('option')
+  newOption.setAttribute('type', 'text')
+  newOption.setAttribute('placeholder', 'Other Option')
+  /*      *****         allow the user to control the no of options         */
+  associateCountInputToElement(optionsCountInput, options, newOption, 2, 10);
+
 
   // get the input for #tags
   const tagsCounter = document.getElementById('#tag-list');
@@ -89,30 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const tagList = document.getElementById('tag-list');
   // record of how many tags are being shown
   let tagsCount = 2
-  // allow the user to control the no of tagss
-  tagsCounter.addEventListener('change', () => {
-    // don't do anything if an integer is not given or input is out of range
-    if (tagsCounter.value % 1 !== 0 || 0 > tagsCounter.value || 5 < tagsCounter.value) {
-      return
-    }
-    // add tag inputs if tagsCounter.value > tagsCount
-    if (tagsCounter.value > tagsCount) {
-      for (let i = tagsCount; i < tagsCounter.value; i++) {
-        const newTag = document.createElement('input');
-        newTag.classList.add('tag-item');
-        newTag.setAttribute('type', 'text');
-        tagList.appendChild(newTag);
-        tagsCount++;
-      }
-      // and remove tag inputs if tagsCounter.value < tagsCount
-    } else if (tagsCounter.value < tagsCount) {
-      const tagInputs = document.querySelectorAll('#tag-list .tag-item')
-      for (let i = tagInputs.length - 1; i >= tagsCounter.value; i--) {
-        tagInputs[i].remove()
-        tagsCount--;
-      }
-    }
-  });
+  // new tag template
+  const newTag = document.createElement('input');
+  newTag.classList.add('tag-item');
+  newTag.setAttribute('type', 'text');
+  /*      *****         allow the user to control the no of tags         */
+  associateCountInputToElement(tagsCounter, tagList, newTag, 0, 10);
 
   // On submit create question elements and render qustion to screen
   const mcqForm = document.getElementById('mcq_input');
@@ -123,8 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // don't do anything if no new question is typed
     const question = document.getElementById('question').value
     if (!question) {
-        console.log('didn\'t find question')
-        return
+      console.log('didn\'t find question')
+      return
     }
     // don't do anything if any option is missing
     const optionInputs = document.querySelectorAll('.option')
@@ -187,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   answerSheet.addEventListener('submit', e => {
     e.preventDefault();
     const data = new FormData(answerSheet);
-    
+
     const answers = []
     for (answer of data.entries()) {
       answers.push(answer[1])
@@ -198,11 +154,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.alert('Please answer all questions!');
       return
     }
-    
+
     const total = answers.length;
     // answer is correct if answer === '0'
     const score = answers.filter(answer => answer === '0').length;
-  
+
     let myMcqs = document.querySelectorAll('.mcq');
     for (mcq of myMcqs) {
       const answer = document.querySelector(`input[name="${mcq.getAttribute('data-id')}"]:checked`);
@@ -221,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       total++;
     }
-  
+
     const marks = document.createElement('p');
     marks.innerHTML = `You scored ${score}/${total}!`;
     evaluation.appendChild(marks);
@@ -313,41 +269,36 @@ function capitalize(str) {
   return result;
 }
 
-// shuffles the options array and returns the position of 0th option (right answer) after shuffle
-function shuffle(options) {
-  //let rightanswerIndex = 0;
-  for (let i = 0; i < options.length; i++) {
-    const swapWith = Math.floor(Math.random() * options.length);
-    //if (i === rightanswerIndex) {
-      //rightanswerIndex = swapWith;
-    //} else if (swapWith === rightanswerIndex) {
-      //rightanswerIndex = i;
-    //}
-    [options[i], options[swapWith]] = [options[swapWith], options[i]];
+// shuffles an array
+function shuffle(array) {
+  for (let i = 0; i < array.length; i++) {
+    const swapWith = Math.floor(Math.random() * array.length);
+    [array[i], array[swapWith]] = [array[swapWith], array[i]];
   }
-  // return rightanswerIndex;
-  /* the commented code below has a bug I can't find
-  but it often leaves out option elements from options array ! */
+}
 
-  // let remaining = options.slice(0);
-  // // empty array
-  // for (let i = 0; i < options.length; i++) {
-  //   options.shift();
-  // }
-  // let rightanswer;
-  // for (let i = 0; i < remaining.length; i++) {
-  //   let add = Math.floor(Math.random() * remaining.length);
-  //   // if rightanswer is being added, record new position of right answer
-  //   if (!rightanswer && add === 0) {
-  //     rightanswer = options.length;
-  //   }
-  //   options.push(remaining[add]);
-  //   // remove the option just added from remaining
-  //   if (add + 1 === remaining.length) {
-  //     remaining = remaining.slice(0, add)
-  //   } else {
-  //     remaining = remaining.slice(0, add).concat(remaining.slice(add + 1))
-  //   }
-  // }
-  // return rightanswer;
+function associateCountInputToElement(countInput, container, newElement, min, max) {
+  // record of how many container are being shown
+  let elementsCount = container.childElementCount;
+  // allow the user to control the no of options
+  countInput.addEventListener('change', () => {
+    // don't do anything if an integer is not given or input is out of range
+    if (countInput.value % 1 !== 0 || (min > countInput.value && min !== undefined) || (max !== undefined && max < countInput.value)) {
+      return
+    }
+    // add new elements if elements count input is more than element count now
+    if (countInput.value > elementsCount) {
+      for (let i = elementsCount; i < countInput.value; i++) {
+        container.appendChild(newElement.cloneNode(true));
+        elementsCount++
+      }
+      // and remove elements if elements count input is less than elements count now
+    } else if (countInput.value < elementsCount) {
+      const elements = container.querySelectorAll(newElement.tagName)
+      while (elementsCount > countInput.value) {
+        elements[elements.length - 1].remove()
+        elementsCount--;
+      }
+    }
+  });
 }
