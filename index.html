@@ -59,22 +59,29 @@
         <!-- Make your questions form -->
         <form action="" id="mcq_input">
           <p>Make your own Multiple Choice Question</p>
+          <!-- Get question -->
           <label for="question">Question</label>
           <input id="question" type="text" name="question">
+          <!-- get options -->
+          <!-- how many options -->
           <label for="#options">No. of options</label>
           <input id="#options" type="number" min="2" max="10" name="#options" value="2">
+          <!-- the options -->
           <div id="options">
             <input class="option" type="text" id="right_answer" placeholder="Right Answer">
             <input class="option" type="text" placeholder="Other Option">
           </div>
+          <!-- get subject -->
           <label for="subject">Subject</label>
           <input id="subject" type="text" name="subject">
+          <!-- get tags -->
           <label for="tag-list">No. of tags</label>
           <input id="#tag-list" type="number" min="0" max="5" name="#tag-list" value="2">
           <div id="tag-list">
             <input class="tag-item" type="text">
             <input class="tag-item" type="text">
           </div>
+          <!-- submit -->
           <input type="submit" id="post_submit">
         </form>
     </main>
