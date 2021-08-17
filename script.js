@@ -16,10 +16,36 @@ function displayCurrentMcqs() {
       toBeRemoved[0].parentNode.removeChild(toBeRemoved[0])
     }
   }
-
-  mcqs.forEach(mcq => {
-    addMcq(mcq)
+  // Filter the list according to the number of questions and chosen subject
+  // First get the number of questions and the subject
+  const numQuestions = document.querySelector('input[name="sample-num"]:checked').value;
+  let chosenSubject = document.querySelector('input[name="sample-post"]:checked').value;
+  chosenSubject = chosenSubject.toLowerCase();
+  // Filter the mcq's according to subject
+  let filteredArray = mcqs.filter(post => {
+    return post.subjectId === getSubjectId(chosenSubject);
   });
+
+  // If there are less questions available than requested, show all of them.
+  if (numQuestions >= filteredArray.length) {
+    filteredArray.forEach(mcq => {
+      addMcq(mcq)
+    });
+  // Otherwise there are more questions available than requested
+  } else {
+    let newFilteredArray = [];
+    for (let i = 0; i < numQuestions; i++) {
+      // Create an index to choose a random number
+      let randomIndex = Math.floor(Math.random() * filteredArray.length);
+
+      // Remove choice from choice array, choice will be an array (so use choice[0])
+      let choice = filteredArray.splice(randomIndex, 1);
+      newFilteredArray.push(choice[0]);
+    }
+    newFilteredArray.forEach(mcq => {
+      addMcq(mcq)
+    });
+  }
 }
 
 // when page loads
@@ -167,7 +193,8 @@ document.addEventListener("DOMContentLoaded", () => {
       answers.push(answer[1])
     }
     // don't do anything if any question is unanswered
-    if (mcqs.length > answers.length) {
+    let totalQuestions = document.querySelector('input[name="sample-num"]:checked').value;
+    if (totalQuestions > answers.length) {
       window.alert('Please answer all questions!');
       return
     }
@@ -175,9 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const total = answers.length;
     // answer is correct if answer === '0'
     const score = answers.filter(answer => answer === '0').length;
-    /*
-    let mcqs = document.querySelectorAll('.mcq');
-    for (mcq of mcqs) {
+  
+    let myMcqs = document.querySelectorAll('.mcq');
+    for (mcq of myMcqs) {
       const answer = document.querySelector(`input[name="${mcq.getAttribute('data-id')}"]:checked`);
       // if any mcq not answered, focus to that mcq and return
       if (answer === null) {
@@ -194,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       total++;
     }
-    */
+  
     const marks = document.createElement('p');
     marks.innerHTML = `You scored ${score}/${total}!`;
     evaluation.appendChild(marks);
