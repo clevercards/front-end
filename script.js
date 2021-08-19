@@ -261,7 +261,7 @@ function giveMcqElement(mcq) {
   result.appendChild(document.createElement('hr'))
   result.appendChild(subject)
   result.appendChild(tagList)
-  //result.setAttribute('data-rightanswer', rightanswer);
+  result.setAttribute('data-rightanswer', rightanswer);
   //result.setAttribute('data-id', mcq.id);
   return result
 }
