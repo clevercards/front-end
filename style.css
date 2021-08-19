@@ -41,6 +41,11 @@ header {
   margin: 0;
 }
 
+#mcqs {
+  display: none;
+  flex-direction: column;
+}
+
 #mcq_input {
   margin: 1rem;
   display: inline-flex;

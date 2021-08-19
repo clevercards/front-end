@@ -16,12 +16,13 @@ class Tag {
 
 class Mcq {
   constructor(question, options, rightAnswerIndex, subjectId, tags) {
-    this.question = question
-    this.options = options
-    this.rightAnswerIndex = rightAnswerIndex
-    this.subjectId = subjectId
-    this.tags = tags
-    this.id = generateRandomId()
+    this.question = question;
+    this.options = options;
+    this.rightAnswerIndex = rightAnswerIndex;
+    this.subjectId = subjectId;
+    this.tags = tags;
+    this.id = generateRandomId();
+    this.rightAnswer = options[rightAnswerIndex]; // this will be used to evaluate answer
   }
 }
 
@@ -43,7 +44,7 @@ const tags = [
 // Added more questions
 const mcqs = [
   new Mcq('Which one of these is Euler\'s number?', ['2.718','1.414', '3.142'], 1, getSubjectId('mathematics'), getTagIds(['exponentials', 'euler\'s number'])),
-  new Mcq('Carbon\'s atomic number is-', ['6', '50', '25', '12'], 3, getSubjectId('chemistry'), getTagIds(['atomic number', 'elements'])),
+  new Mcq('Carbon\'s atomic number is-', ['6', '50', '25', '12'], 0, getSubjectId('chemistry'), getTagIds(['atomic number', 'elements'])),
   new Mcq('Choose the correct statement?', ['Light is a wave','Light is a particle', 'Light is both'], 2, getSubjectId('physics'), getTagIds(['waves', 'particle'])),
   new Mcq('Which method is suited for extracting salt (only) from sea water:', ['filtration', 'evaporation', 'fractional distillation', 'simple distillation'], 1, getSubjectId('chemistry'), getTagIds(['seperation techniques'])),
   new Mcq('Choose Avogadro\'s number', ['6.02e23','6.02e-23', '3e8'], 0, getSubjectId('chemistry'), getTagIds(['exponentials', 'euler\'s number'])),
