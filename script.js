@@ -5,7 +5,7 @@ function addMcq(mcq) {
   mcqsDisplay.prepend(giveMcqElement(mcq))
 }
 // show specified mcqs
-function displayCurrentMcqs(mcqs) {
+function displayCurrentMcqs() {
   // add every post to display
   const mcqsDisplay = document.querySelector('#mcqs');
   const toBeRemoved = document.getElementsByClassName('mcq');
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newMcq = new Mcq(question, options, 0, getSubjectId(subjectName), getTagIds(tagArray));
     mcqs.push(newMcq);
     // add new post to display
-    addMcq(newMcq);
+    addMcq(newMcq); 
     // Clear the input fields after submit 
     document.getElementById('mcq_input').reset();
   });
@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   introForm.addEventListener('submit', e => {
     // prevent reload
     e.preventDefault();
+    document.getElementById('mcqs').style.display = 'flex'
     displayCurrentMcqs();
   });
 
@@ -155,13 +156,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
 
-    const total = answers.length;
+    let total = answers.length;
     // answer is correct if answer === '0'
-    const score = answers.filter(answer => answer === '0').length;
+    // const score = answers.filter(answer => answer === '0').length;
+    let score = 0;
 
     let myMcqs = document.querySelectorAll('.mcq');
     for (mcq of myMcqs) {
-      const answer = document.querySelector(`input[name="${mcq.getAttribute('data-id')}"]:checked`);
+      const answer = document.querySelector(`input[name="${mcq.getAttribute('id')}"]:checked`);
       // if any mcq not answered, focus to that mcq and return
       if (answer === null) {
         mcq.focus()
@@ -169,13 +171,19 @@ document.addEventListener("DOMContentLoaded", () => {
         return
       }
       // non-strict equal because attribute value is string
-      if (answer.getAttribute('value') == mcq.getAttribute('data-rightanswer')) {
+      let rightAnswer;
+      for (mcqElement of mcqs) {
+        if (mcq.getAttribute('id') == mcqElement.id) {
+          rightAnswer = mcqElement.rightAnswer;
+        }
+      }
+      if (answer.getAttribute('id') == `option-${rightAnswer}`) { // compare answer values
         score++;
         console.log('right')
       } else {
-        console.log(`It's ${mcq.getAttribute('data-rightanswer')}, not ${answer.value}`)
+        console.log(`It's ${rightAnswer}, not ${answer.getAttribute('id').slice(7)}`)
       }
-      total++;
+      // total++; No need to increment total.
     }
 
     const marks = document.createElement('p');
@@ -272,7 +280,7 @@ function capitalize(str) {
 // shuffles an array
 function shuffle(array) {
   for (let i = 0; i < array.length; i++) {
-    const swapWith = Math.floor(Math.random() * array.length);
+    const swapWith = Math.floor(Math.random() * array.length); // If swapWith === i, there will be no swapping.
     [array[i], array[swapWith]] = [array[swapWith], array[i]];
   }
 }
