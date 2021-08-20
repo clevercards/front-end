@@ -18,8 +18,10 @@
           <!-- Introductory form -->
           <form action="" id="introduction">
             <p>
-                Create sample questions and test your ability in the fields of
-                Physics, Biology, Chemistry and Mathematics.
+                Practise sample questions and test your ability in 
+                <select name="sample-subject" id="sample-subject">
+                  <option value="" disabled selected>choose subject</option>
+                </select>
             </p>
             <fieldset>
               <legend>Create Sample Test</legend>
@@ -32,17 +34,6 @@
                   <label for="sample-number-2">5</label><br>
                   <input type="radio" id="sample-number-3" name="sample-num" value="10">
                   <label for="sample-number-3">10</label>
-                </div>
-                <div class="sample-subject">
-                  <h3>Choose a Subject</h3>
-                  <input type="radio" id="mathematics" name="sample-post" value="Mathematics">
-                  <label for="mathematics">Mathematics</label><br>
-                  <input type="radio" id="biology" name="sample-post" value="Biology">
-                  <label for="biology">Biology</label><br>
-                  <input type="radio" id="chemistry" name="sample-post" value="Chemistry">
-                  <label for="chemistry">Chemistry</label><br>
-                  <input type="radio" id="physics" name="sample-post" value="Physics">
-                  <label for="physics">Physics</label>
                 </div>
               </div>
             </fieldset>
@@ -68,8 +59,8 @@
           <input id="#options" type="number" min="2" max="10" name="#options" value="2">
           <!-- the options -->
           <div id="options">
-            <input class="option" type="text" id="right_answer" placeholder="Right Answer">
-            <input class="option" type="text" placeholder="Other Option">
+            <input class="option" type="text" id="right_answer" name="right_answer" placeholder="Right Answer">
+            <input class="option" type="text" name="other_option" placeholder="Other Option">
           </div>
           <!-- get subject -->
           <label for="subject">Subject</label>
@@ -78,8 +69,8 @@
           <label for="tag-list">No. of tags</label>
           <input id="#tag-list" type="number" min="0" max="5" name="#tag-list" value="2">
           <div id="tag-list">
-            <input class="tag-item" type="text">
-            <input class="tag-item" type="text">
+            <input class="tag-item" name="tag-input" type="text">
+            <input class="tag-item" name="tag-input" type="text">
           </div>
           <!-- submit -->
           <input type="submit" id="post_submit">
