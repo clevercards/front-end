@@ -43,14 +43,14 @@ const tags = [
 
 // Added more questions
 const mcqs = [
-  new Mcq('Which one of these is Euler\'s number?', ['2.718','1.414', '3.142'], 1, getSubjectId('mathematics'), getTagIds(['exponentials', 'euler\'s number'])),
+  new Mcq('Which one of these is Euler\'s number?', ['2.718','1.414', '3.142'], 0, getSubjectId('mathematics'), getTagIds(['exponentials', 'euler\'s number'])),
   new Mcq('Carbon\'s atomic number is-', ['6', '50', '25', '12'], 0, getSubjectId('chemistry'), getTagIds(['atomic number', 'elements'])),
-  new Mcq('Choose the correct statement?', ['Light is a wave','Light is a particle', 'Light is both'], 2, getSubjectId('physics'), getTagIds(['waves', 'particle'])),
-  new Mcq('Which method is suited for extracting salt (only) from sea water:', ['filtration', 'evaporation', 'fractional distillation', 'simple distillation'], 1, getSubjectId('chemistry'), getTagIds(['seperation techniques'])),
+  new Mcq('Choose the correct statement?', ['Light is both', 'Light is a wave','Light is a particle'], 0, getSubjectId('physics'), getTagIds(['waves', 'particle'])),
+  new Mcq('Which method is suited for extracting salt (only) from sea water:', ['evaporation', 'filtration', 'fractional distillation', 'simple distillation'], 0, getSubjectId('chemistry'), getTagIds(['seperation techniques'])),
   new Mcq('Choose Avogadro\'s number', ['6.02e23','6.02e-23', '3e8'], 0, getSubjectId('chemistry'), getTagIds(['exponentials', 'euler\'s number'])),
-  new Mcq('Calcium\'s proton number is-', ['40', '20', '25', '12'], 1, getSubjectId('chemistry'), getTagIds(['atomic number', 'elements'])),
-  new Mcq('Choose the correct statement?', ['solid particles move freely','liquids fill up the room', 'gases expand'], 2, getSubjectId('physics'), getTagIds(['kinetic theory'])),
-  new Mcq('Which method is suited for extracting salt and water from sea water:', ['filtration', 'evaporation', 'fractional distillation', 'simple distillation'], 3, getSubjectId('chemistry'), getTagIds(['seperation techniques'])),
+  new Mcq('Calcium\'s proton number is-', ['20', '40', '25', '12'], 0, getSubjectId('chemistry'), getTagIds(['atomic number', 'elements'])),
+  new Mcq('Choose the correct statement?', ['gases expand', 'solid particles move freely','liquids fill up the room'], 0, getSubjectId('physics'), getTagIds(['kinetic theory'])),
+  new Mcq('Which method is suited for extracting salt and water from sea water:', ['simple distillation', 'filtration', 'evaporation', 'fractional distillation'], 0, getSubjectId('chemistry'), getTagIds(['seperation techniques'])),
   new Mcq('What is the unit of momentum?', ['kg.m/s', 'J.s', 'm/K'], 0, getSubjectId('physics'), getTagIds(['momentum']))
 ];
 
